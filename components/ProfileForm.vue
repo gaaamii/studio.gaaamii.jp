@@ -67,6 +67,11 @@ const { execute, status } = await useAsyncData(
     $fetch(`${API_SERVER_ORIGIN}/links`, {
       method: "PUT",
       body: { links: links.value },
+      mode: "cors",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json; charset=utf-8",
+      },
     }),
   { immediate: false },
 );
