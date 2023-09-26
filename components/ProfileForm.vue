@@ -34,6 +34,8 @@
   </form>
 </template>
 <script setup lang="ts">
+import { useFetchFromGaaamiiAPI } from "../composables/useFetchFromGaaamiiAPI";
+
 type Link = { name: string; url: string };
 const introduction = ref(
   "東京都在住のソフトウェア開発者です。仕事や趣味でウェブアプリの画面を作ったりRESTish APIを作ったりしています。",
@@ -60,19 +62,13 @@ const addLink = () => {
   }
   isAddLinkFieldVisible.value = false;
 };
-const { API_SERVER_ORIGIN } = useRuntimeConfig().public;
-const { execute, status } = await useAsyncData(
+const { execute, status } = await useFetchFromGaaamiiAPI(
   "links",
-  () =>
-    $fetch(`${API_SERVER_ORIGIN}/links`, {
-      method: "PUT",
-      body: { links: links.value },
-      mode: "cors",
-      credentials: "include",
-      headers: {
-        "Content-Type": "application/json; charset=utf-8",
-      },
-    }),
+  "/links",
+  {
+    method: "PUT",
+    body: { links: links.value },
+  },
   { immediate: false },
 );
 const postLinks = () => {
